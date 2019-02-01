@@ -4,6 +4,7 @@ package jsonRead;
 
 import com.google.gson.Gson;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.FileReader;
@@ -16,16 +17,22 @@ import java.io.FileReader;
  */
 public class JSONReader {
 
-    public void reader() {
+	/**
+	 * 
+	 * @param takes in a json file
+	 * @return returns a List of sites
+	 */
+    public Readings reader(File file) {
         Gson gson = new Gson();
+        Readings listOfSites = null;
         try {
             // reader for json file
-            BufferedReader reader = new BufferedReader(new FileReader("example.json"));
+            BufferedReader reader = new BufferedReader(new FileReader(file));
             //creating an object of json file
-            Readings sample = gson.fromJson(reader, Readings.class);
+            listOfSites = gson.fromJson(reader, Readings.class);
             // delete later used to just show the output of the sample json
-            if (sample != null) {
-                for (Site t : sample.getSiteReadings()) {
+            if (listOfSites != null) {
+                for (Site t : listOfSites.getSiteReadings()) {
                     System.out.println(t.toString());
                 }
             }
@@ -35,6 +42,9 @@ public class JSONReader {
         } catch (IOException ie) {
             ie.printStackTrace();
         }
+        
+        return listOfSites;
     }
+    
 
 }

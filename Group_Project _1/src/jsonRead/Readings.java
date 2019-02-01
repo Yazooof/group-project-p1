@@ -23,4 +23,16 @@ public class Readings {
     }
     
     
+    public StringBuilder getAllSitesFormated() {
+    	StringBuilder sb = new StringBuilder();
+    	
+    	for(Site site : siteReadings)
+    	{
+    		sb.append(site.toString());
+    		sb.append("\n");
+    	}
+    	
+    	return sb;
+    }
+  
 }
