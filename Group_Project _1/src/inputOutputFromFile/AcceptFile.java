@@ -9,7 +9,7 @@ import jsonRead.Readings;
 
 
 /**
- * Decription: Class that sets us the file chooser for the Gui to accept a file 
+ * Decription: Class that sets up the file chooser for the Gui to accept a file 
  * @author hassanmumin
  *
  */
