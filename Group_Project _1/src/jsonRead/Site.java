@@ -81,7 +81,6 @@ public class Site {
         sb.append("site_id: " + getSiteID() + "\n");
         sb.append("reading_type: " + getReadingType() + "\n");
         sb.append("reading_id: " + getReadingID() + "\n");
-        sb.append("reading_id: " + getReadingID() + "\n");
         sb.append("reading_value: " + getReadingValue() + "\n");
         sb.append("reading_date: " + getReadingDate() + "\n");
         return sb.toString();
