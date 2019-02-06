@@ -13,24 +13,23 @@ public class Main {
      */
     public static void main(String[] args) {
         String option = "";
+        String option1 = "";
         Scanner standardInput = new Scanner(System.in);
         System.out.println("would you like to start collection? 'yes' or 'no' ");
         option = standardInput.nextLine();
-        // option 1 is to ask if the user wants to add onto the json file having it saved.
         if (option.equalsIgnoreCase("yes")) {
             while (option.equalsIgnoreCase("yes")) {
                 JSONWriter writer = new JSONWriter();
                 writer.writeToJSON();
                 System.out.println("would you like to end data collection?");
-                option = standardInput.nextLine();
-                if (option.equalsIgnoreCase("yes")) {
+                option1 = standardInput.nextLine();
+                if (option1.equalsIgnoreCase("yes")) {
                     break;
                 }
             }
             String option2 = "";
             System.out.println("would you like to start data collection without saving?");
             option2 = standardInput.nextLine();
-            // option2 is for if the user wants to enter in data without having it saved onto the JSON file.
             while (option2.equalsIgnoreCase("yes")) {
                 JSONWriter writer = new JSONWriter();
                 writer.writerInterface();
@@ -43,7 +42,6 @@ public class Main {
 
         }
 
-        // not sure if it's in the criteria but will be a great addition to output the file and display what is needed.
         System.out.println("would you like to read all the reading data?");
         option = standardInput.nextLine();
         if (option.equalsIgnoreCase("yes")) {
