@@ -22,12 +22,6 @@ public class JSONReader {
             BufferedReader reader = new BufferedReader(new FileReader("example.json"));
             //creating an object of json file
             Readings sample = gson.fromJson(reader, Readings.class);
-            // delete later used to just show the output of the sample json
-            /*if (sample != null) {
-                for (Site t : sample.getSiteReadings()) {
-                    System.out.println(t.toString());
-                }
-            }*/
             reader.close();
             return sample.getSiteReadings();
         } catch (FileNotFoundException fnfe) {
@@ -38,6 +32,7 @@ public class JSONReader {
         return new ArrayList<>();
     }
 
+    // used for displaying the object in the JSON file.
     public void display() {
         if (reader() != null) {
             for (Site t : reader()) {
