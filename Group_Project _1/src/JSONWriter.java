@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 
 /**
- *
+ * The writer class for the json file.
  *
  * @author Amadeus
  */
