@@ -1,7 +1,6 @@
-package jsonRead;
-
 
 import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
 
 /**
@@ -22,6 +21,18 @@ public class Site {
     @SerializedName("reading_date")
     private String readingDate;
 
+
+   
+    public Site(){}
+    
+    public Site(String siteID, String readingType, String readingID, String readingValue, String readingDate) {
+        this.siteID = siteID;
+        this.readingType = readingType;
+        this.readingID = readingID;
+        this.readingValue = readingValue;
+        this.readingDate = readingDate;
+    }
+    
     public String getSiteID() {
         return siteID;
     }
@@ -41,6 +52,28 @@ public class Site {
     public String getReadingDate() {
         return readingDate;
     }
+    
+     public void setSiteID(String siteID) {
+        this.siteID = siteID;
+    }
+
+    public void setReadingType(String readingType) {
+        this.readingType = readingType;
+    }
+
+    public void setReadingID(String readingID) {
+        this.readingID = readingID;
+    }
+
+    public void setReadingValue(String readingValue) {
+        this.readingValue = readingValue;
+    }
+
+    public void setReadingDate(String readingDate) {
+        this.readingDate = readingDate;
+    }
+    
+    
     
     @Override
     public String toString(){
