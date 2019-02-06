@@ -10,7 +10,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author meng
+ * @author Amadeus
  */
 public class JSONWriter {
 
