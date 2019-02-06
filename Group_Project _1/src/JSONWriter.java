@@ -31,6 +31,7 @@ public class JSONWriter {
         reading.setSiteReadings(siteReadings);
         String json = gson.toJson(reading);
         try {
+            // the file writer for writing into the json file
             FileWriter writer = new FileWriter("example.json");
             writer.write(json);
             writer.close();
@@ -39,6 +40,7 @@ public class JSONWriter {
         }
     }
 
+    // this method is just to display what the interface questions for adding onto the JSON file
     public Site writerInterface() {
         Site site = new Site();
         Scanner stdin = new Scanner(System.in);
