@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * Description: The reader for the json file
- *
+ *Sources that helped me with gson: https://www.javainterviewpoint.com/read-write-json-using-gson/
  *
  * @author Amadeus
  */
