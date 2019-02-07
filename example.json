@@ -1,0 +1,11 @@
+{
+  "site_readings": [
+    {
+      "site_id": "12344",
+      "reading_type": "test",
+      "reading_id": "1234",
+      "reading_value": "5",
+      "reading_date": "02062019"
+    }
+  ]
+}
