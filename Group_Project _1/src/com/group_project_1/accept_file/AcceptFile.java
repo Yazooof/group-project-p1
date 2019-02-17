@@ -1,10 +1,8 @@
-package inputOutputFromFile;
+package com.group_project_1.accept_file;
 
 import java.io.File;
 import javax.swing.JFileChooser;
-import collection.*;
-import jsonRead.*;
-import inputOutputFromFile.*;
+
 
 
 /**
@@ -22,21 +20,19 @@ public class AcceptFile {
      *
      * @return
      */
-    public Readings chooseFile() {
-        Readings listOfSites = null;
+    public File chooseFile() {
+        File addedFile  = null;
         if (fileChooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 
-            File addedFile = fileChooser.getSelectedFile();
+        	addedFile = fileChooser.getSelectedFile();
 
-            JSONReader jReader = new JSONReader();
-            jReader.setInPutJsonFile(addedFile);
-            listOfSites = jReader.jsonFileWriter();
+           
 
         } else {
             System.out.println("No File picked/cancel button clicked");
         }
 
-        return listOfSites;
+        return addedFile;
     }
 
 }

@@ -1,4 +1,4 @@
-package gui;
+package com.group_project_1.gui;
 
 import java.awt.EventQueue;
 import javax.swing.JFrame;
@@ -7,14 +7,22 @@ import java.awt.Font;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
-import collection.Site;
-import inputOutputFromFile.AcceptFile;
-import jsonRead.JSONWriter;
-
 import javax.swing.JTextField;
+
+import com.google.gson.JsonArray;
+import com.group_project_1.accept_file.AcceptFile;
+import com.group_project_1.collection.Site;
+import com.group_project_1.json_file_read_write.JSONReader;
+import com.group_project_1.json_file_read_write.JSONWriter;
+import com.group_project_1.json_file_read_write.ReadFromFile;
+
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.awt.event.ActionEvent;
 
 public class MainFrame {
@@ -181,14 +189,15 @@ public class MainFrame {
 		importButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				AcceptFile af = new AcceptFile();
-				
+				ReadFromFile read = new ReadFromFile();
 				try {
-					siteList.addAll(af.chooseFile().getSiteReadings());
+					File file = af.chooseFile();
+					for(Site f: read.readFromInputFile(file).getSiteReadings())
+						siteList.add(f);
+					
 				} catch (Exception e) {
-					// TODO: handle exception
+					
 				}
-			
-				
 			}
 		});
 		importButton.setBounds(734, 54, 97, 23);
@@ -269,7 +278,7 @@ public class MainFrame {
 							
 					for (String s : notInProgressSiteIDList) {
 						notInProgressCollectionsTextArea.append(s);
-						inProgressCollectionsTextArea.append("\n");
+						notInProgressCollectionsTextArea.append("\n");
 
 					}	
 					startStopCollectionsTextField.setText(null);
@@ -319,15 +328,10 @@ public class MainFrame {
 				
 				mainTextArea.setText(null); // clear main text box before displaying all readings
 				
-				
-				for (Site s : siteList) {
-					if(!siteList.isEmpty()) {
-						mainTextArea.append(s.toString() + "\n");
-					}
-					
+				for (Site site : siteList) {
+					mainTextArea.append(site.toString() + "\n");
+					System.out.println(site.toString());
 				}
-				
-				
 				
 				if(mainTextArea.getText().isEmpty()) {
 					mainTextArea.append("No readings to show");

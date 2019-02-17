@@ -1,17 +1,17 @@
-package jsonRead;
+package com.group_project_1.json_file_read_write;
 
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.group_project_1.accept_file.*;
+import com.group_project_1.collection.*;
+import com.group_project_1.json_file_read_write.*;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import collection.*;
-import inputOutputFromFile.*;
-import jsonRead.*;
-import gui.*;
 
 
 
@@ -32,13 +32,9 @@ public class JSONWriter {
         //Site site = writerInterface();
         // as you can see it's using the reader class 
         
-        //commented out because i dont think we need this anymore 
-        //List<Site> 
+       
         
         for (Site site : siteReadings) {
-        	siteReadings = Jreader.reader(); 
-            siteReadings.add(site);
-            // setting the site object
             reading.setSiteReadings(siteReadings);
             String json = gson.toJson(reading);
             try {
