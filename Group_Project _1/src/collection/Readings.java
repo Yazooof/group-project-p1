@@ -1,4 +1,4 @@
-package jsonRead;
+package collection;
 
 
 import com.google.gson.annotations.SerializedName;

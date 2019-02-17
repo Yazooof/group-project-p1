@@ -1,12 +1,10 @@
 package inputOutputFromFile;
 
 import java.io.File;
-
 import javax.swing.JFileChooser;
-
-import jsonRead.JSONReader;
-import jsonRead.Readings;
-
+import collection.*;
+import jsonRead.*;
+import inputOutputFromFile.*;
 
 /**
  * Decription: Class that sets up the file chooser for the Gui to accept a file 

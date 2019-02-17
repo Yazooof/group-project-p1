@@ -1,33 +1,18 @@
 package gui;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
-
-import com.google.gson.stream.JsonReader;
-import com.toedter.calendar.JDateChooser;
-import com.toedter.calendar.demo.DateChooserPanel;
-
-import jsonRead.Site;
-
+import collection.Site;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.awt.event.ActionEvent;
-import javax.swing.JTextPane;
-import javax.swing.text.DefaultHighlighter;
-import javax.swing.text.Highlighter;
-import javax.swing.text.Highlighter.HighlightPainter;
-import javax.xml.bind.NotIdentifiableEvent;
-import javax.swing.JEditorPane;
 
 public class MainFrame {
 
@@ -133,6 +118,7 @@ public class MainFrame {
 				}
 				readingIDField.setText(null);
 				readingValueField.setText(null);
+				
 			}
 			
 
@@ -182,7 +168,7 @@ public class MainFrame {
 		
 		
 		
-		JButton importButton = new JButton("Import");
+		JButton importButton = new JButton("Import"); 
 		importButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				
@@ -204,7 +190,7 @@ public class MainFrame {
 				
 				if(userEnteredID.isEmpty()) {// check text field not empty before doing work on text field 
 					mainTextArea.append("Invalid site ID\n");
-				}else if(inProgressSiteIDList.contains(userEnteredID)) {
+				}else if(inProgressSiteIDList.contains(userEnteredID)) {// check to see that collection is not already started
 					mainTextArea.append("Collection already in progress\n");
 					startStopCollectionsTextField.setText(null);
 
@@ -224,7 +210,7 @@ public class MainFrame {
 							
 					for (String s : notInProgressSiteIDList) {
 						notInProgressCollectionsTextArea.append(s);
-						inProgressCollectionsTextArea.append("\n");
+						notInProgressCollectionsTextArea.append("\n");
 
 					}	
 					
