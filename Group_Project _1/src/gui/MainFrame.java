@@ -8,6 +8,9 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.JButton;
 import collection.Site;
+import inputOutputFromFile.AcceptFile;
+import jsonRead.JSONWriter;
+
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
@@ -128,6 +131,12 @@ public class MainFrame {
 		frame.getContentPane().add(addReadingButton);
 		
 		JButton exportButton = new JButton("Export");
+		exportButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				JSONWriter writer = new JSONWriter();
+                writer.writeToJSON(siteList);
+			}
+		});
 		exportButton.setBounds(870, 54, 89, 23);
 		frame.getContentPane().add(exportButton);
 		
@@ -171,6 +180,14 @@ public class MainFrame {
 		JButton importButton = new JButton("Import"); 
 		importButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				AcceptFile af = new AcceptFile();
+				
+				try {
+					siteList.addAll(af.chooseFile().getSiteReadings());
+				} catch (Exception e) {
+					// TODO: handle exception
+				}
+			
 				
 			}
 		});
@@ -302,11 +319,15 @@ public class MainFrame {
 				
 				mainTextArea.setText(null); // clear main text box before displaying all readings
 				
+				
 				for (Site s : siteList) {
-					
-					mainTextArea.append(s.toString());
+					if(!siteList.isEmpty()) {
+						mainTextArea.append(s.toString() + "\n");
+					}
 					
 				}
+				
+				
 				
 				if(mainTextArea.getText().isEmpty()) {
 					mainTextArea.append("No readings to show");

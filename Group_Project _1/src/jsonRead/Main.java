@@ -49,6 +49,7 @@ public class Main {
         if (option.equalsIgnoreCase("yes")) {
             JSONReader Jreader = new JSONReader();
             Jreader.display();
+            Jreader.reader().
         }
 
         System.out.println("data collection is completed");
