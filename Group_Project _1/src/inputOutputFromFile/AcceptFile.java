@@ -30,7 +30,7 @@ public class AcceptFile {
 			File addedFile = fileChooser.getSelectedFile();
 			
 			JSONReader Jreader = new JSONReader();
-	        listOfSites = Jreader.reader(addedFile);
+	        listOfSites = (Readings) Jreader.reader();
 	        
 		} else {
 			System.out.println("No File picked/cancel button clicked");

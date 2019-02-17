@@ -1,6 +1,7 @@
+package jsonRead;
+
 
 import com.google.gson.annotations.SerializedName;
-import java.util.List;
 
 
 /**
@@ -20,7 +21,7 @@ public class Site {
     private String readingValue;
     @SerializedName("reading_date")
     private String readingDate;
-
+    
 
    
     public Site(){}
@@ -31,6 +32,10 @@ public class Site {
         this.readingID = readingID;
         this.readingValue = readingValue;
         this.readingDate = readingDate;
+    }
+    
+    public Site(String siteID, boolean collectionInProgress) {
+        this.siteID = siteID;
     }
     
     public String getSiteID() {
@@ -75,6 +80,14 @@ public class Site {
     
     
     
+	@Override
+	public boolean equals(Object v) {
+	    if(Integer.valueOf(siteID) == Integer.valueOf((String) v)) {
+	    	return true;
+	    }
+	    return false;
+	}
+    
     @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
@@ -85,4 +98,6 @@ public class Site {
         sb.append("reading_date: " + getReadingDate() + "\n");
         return sb.toString();
     }
+
+	
 }

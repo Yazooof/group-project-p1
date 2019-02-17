@@ -5,5 +5,10 @@
 	<classpathentry kind="lib" path="lib/gson-2.8.2-javadoc.jar"/>
 	<classpathentry kind="lib" path="lib/gson-2.8.2-sources.jar"/>
 	<classpathentry kind="lib" path="lib/gson-2.8.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/dylon/Documents/GitHub/group-project-p1/Group_Project _1/lib/gson-2.8.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/dylon/Documents/GitHub/group-project-p1/Group_Project _1/lib/gson-2.8.2-javadoc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/dylon/Documents/GitHub/group-project-p1/Group_Project _1/lib/gson-2.8.2-sources.jar"/>
+	<classpathentry kind="lib" path="jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="junit-4.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
