@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class JSONReader {
 	
-	private Gson gsonBuilder = new GsonBuilder().setPrettyPrinting().create();
+    private Gson gsonBuilder = new GsonBuilder().setPrettyPrinting().create();
     private File file;
 
     public List<Site> reader() {
@@ -30,8 +30,10 @@ public class JSONReader {
             // reader for json file
             BufferedReader reader = new BufferedReader(new FileReader("example.json"));
             //creating an object of json file
+	    // deserializes json to readings	
             Readings sample = gson.fromJson(reader, Readings.class);
             reader.close();
+	    // returns the deserialized results in a list collection
             return sample.getSiteReadings();
         } catch (FileNotFoundException fnfe) {
             fnfe.printStackTrace();
@@ -44,6 +46,7 @@ public class JSONReader {
 
     // used for displaying the object in the JSON file.
     public void display() {
+	    
         if (reader() != null) {
             for (Site t : reader()) {
                 System.out.println(t.toString());
