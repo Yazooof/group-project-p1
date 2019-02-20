@@ -4,7 +4,7 @@
 	We ran this program on  Eclipse and IntelliJ
 	
 	The application can be started in two ways 
-	you can either import a file that has reading or you can start a new reading collection.
+	you can either import a file that has readings or you can start a new reading collection.
 	
 # Option 1
 	To import a new reading click on the import button on the application.
