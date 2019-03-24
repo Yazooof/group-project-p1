@@ -6,7 +6,7 @@
 import java.util.ArrayList;
 import java.util.List;
 /**
- *
+ * main class for jreader sample
  * @author Amadeus
  */
 public class MainV3 {
