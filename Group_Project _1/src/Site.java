@@ -1,14 +1,13 @@
 
 import com.google.gson.annotations.SerializedName;
-import java.util.List;
-
 
 /**
- * Description: the class for each site. 
+ * Description: the class for each site.
+ *
  * @author Amadeus
  */
 public class Site {
-    
+
     // the names are changed in the field variables, therefore using serializedname to specify each variable
     @SerializedName("site_id")
     private String siteID;
@@ -21,10 +20,20 @@ public class Site {
     @SerializedName("reading_date")
     private String readingDate;
 
+    // optional
+    private String unit;
 
-   
-    public Site(){}
-    
+    public Site() {
+    }
+
+    public Site(String siteID, String readingType, String readingID, String readingValue) {
+        this.siteID = siteID;
+        this.readingType = readingType;
+        this.readingID = readingID;
+        this.readingValue = readingValue;
+
+    }
+
     public Site(String siteID, String readingType, String readingID, String readingValue, String readingDate) {
         this.siteID = siteID;
         this.readingType = readingType;
@@ -32,7 +41,20 @@ public class Site {
         this.readingValue = readingValue;
         this.readingDate = readingDate;
     }
-    
+
+    public Site(String siteID, String readingType, String readingID, String readingValue, String readingDate, String unit) {
+        this.siteID = siteID;
+        this.readingType = readingType;
+        this.readingID = readingID;
+        this.readingValue = readingValue;
+        this.readingDate = readingDate;
+        this.unit = unit;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
     public String getSiteID() {
         return siteID;
     }
@@ -52,8 +74,8 @@ public class Site {
     public String getReadingDate() {
         return readingDate;
     }
-    
-     public void setSiteID(String siteID) {
+
+    public void setSiteID(String siteID) {
         this.siteID = siteID;
     }
 
@@ -72,15 +94,16 @@ public class Site {
     public void setReadingDate(String readingDate) {
         this.readingDate = readingDate;
     }
-    
-    
-    
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("site_id: " + getSiteID() + "\n");
         sb.append("reading_type: " + getReadingType() + "\n");
-        sb.append("reading_id: " + getReadingID() + "\n");
+        sb.append("site_id: " + getSiteID() + "\n");
         sb.append("reading_id: " + getReadingID() + "\n");
         sb.append("reading_value: " + getReadingValue() + "\n");
         sb.append("reading_date: " + getReadingDate() + "\n");
