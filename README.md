@@ -1,5 +1,5 @@
 # How To Use:
-	This application excepts several files, but they all have to be a JSON format
+	This application excepts several files, but they all have to be a JSON or XML format
 	
 	We ran this program on  Eclipse and IntelliJ
 	
@@ -7,7 +7,7 @@
 	you can either import a file that has readings or you can start a new reading collection.
 	
 # Option 1
-	To import a new reading click on the import button on the application.
+	To import a new reading click on the JSON or XML import button on the application.
 	To add new readings to your imported file type in your Site ID and then click on "Add Site" button 
 	You will see your site Id added to the Stopped Collections, It will reamin until you are reaady to add other data
 	
