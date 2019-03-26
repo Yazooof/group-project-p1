@@ -1,4 +1,5 @@
-package com.group_project_1.accept_file;
+package com.project.fileIO;
+
 
 import java.io.File;
 import javax.swing.JFileChooser;

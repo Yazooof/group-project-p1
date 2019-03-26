@@ -1,29 +1,13 @@
-package com.group_project_1.gui;
+package com.project.gui;
 
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import java.awt.Font;
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
-import javax.swing.JButton;
-import javax.swing.JTextField;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
 
-import com.google.gson.JsonArray;
-import com.group_project_1.accept_file.AcceptFile;
-import com.group_project_1.collection.Site;
-import com.group_project_1.json_file_read_write.JSONReader;
-import com.group_project_1.json_file_read_write.JSONWriter;
-import com.group_project_1.json_file_read_write.ReadFromFile;
+import javax.swing.*;
 
-import javax.swing.JComboBox;
-import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.awt.event.ActionEvent;
+import com.project.Study.*;
+import com.project.fileIO.*;
 
 public class MainFrame {
 
@@ -34,12 +18,18 @@ public class MainFrame {
 	private JTextField startStopCollectionsTextField;
 	private JTextField readingDateField;
 
-	private ArrayList<Site> siteList = new ArrayList<>();// holds all sites in an arrayList
-	
-	private ArrayList<String> inProgressSiteIDList = new ArrayList<>();// list holds siteIDs that have collection in progress
-	private ArrayList<String> notInProgressSiteIDList = new ArrayList<>();// list holds siteIDs with no collections in progress
-	
-	
+	private JComboBox studyComboBox;
+	private JTextArea inProgressCollectionsTextArea;
+	private JTextArea notInProgressCollectionsTextArea;
+
+	private ArrayList<Study> studyList = new ArrayList<>();
+
+	//private ArrayList<Site> siteList = new ArrayList<>();
+
+
+	private JTextField addStudyNameTxtField;
+	private JTextField studyIDTxtField;
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -63,285 +53,353 @@ public class MainFrame {
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	
-	
-	
+
+
+
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 1024, 640);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
-		
+
 		JLabel CollectionsLabel = new JLabel("Collections In Progress");
 		CollectionsLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		CollectionsLabel.setBounds(10, 11, 220, 30);
 		frame.getContentPane().add(CollectionsLabel);
-		
+
 		String[] comboBoxOptions = {"Humidity", "Particulate", "Temp", "Bar_Press"};
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		JComboBox readingTypeComboBox = new JComboBox(comboBoxOptions);
 		readingTypeComboBox.setBounds(381, 203, 155, 20);
 		frame.getContentPane().add(readingTypeComboBox);
-		
+
+		JLabel studyNameLbl = new JLabel("");
+		studyNameLbl.setBounds(780, 7, 190, 44);
+		frame.getContentPane().add(studyNameLbl);
+
 		JScrollPane scrollPane_1 = new JScrollPane();
 		scrollPane_1.setBounds(10, 353, 148, 237);
 		frame.getContentPane().add(scrollPane_1);
-		
-		JTextArea notInProgressCollectionsTextArea = new JTextArea();
+
+		notInProgressCollectionsTextArea = new JTextArea();
 		notInProgressCollectionsTextArea.setEditable(false);
 		scrollPane_1.setViewportView(notInProgressCollectionsTextArea);
-		
+
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(203, 353, 756, 237);
 		frame.getContentPane().add(scrollPane);
-		
+
 		JTextArea mainTextArea = new JTextArea();
 		scrollPane.setViewportView(mainTextArea);
-		
+
 		JScrollPane collectionsScrollPane = new JScrollPane();
 		collectionsScrollPane.setBounds(10, 52, 148, 246);
 		frame.getContentPane().add(collectionsScrollPane);
-		
-		JTextArea inProgressCollectionsTextArea = new JTextArea();
+
+		studyComboBox = new JComboBox();
+		studyComboBox.setBounds(612, 17, 140, 22);
+		frame.getContentPane().add(studyComboBox);
+
+		studyComboBox.addActionListener (new ActionListener () {
+		    public void actionPerformed(ActionEvent e) {
+		        updateInProgressList();
+		        for (Study study : studyList) {
+					if(Integer.parseInt(study.getStudyID()) == Integer.parseInt(studyComboBox.getSelectedItem().toString())){
+						studyNameLbl.setText(study.getStudyName());
+					}
+				}
+		    }
+		});
+
+		inProgressCollectionsTextArea = new JTextArea();
 		inProgressCollectionsTextArea.setEditable(false);
 		collectionsScrollPane.setViewportView(inProgressCollectionsTextArea);
-		
+
 		JButton addReadingButton = new JButton("Add Reading");
 		addReadingButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Site addReadingSite = new Site();
-				addReadingSite.setSiteID(siteIDField.getText());  
-				
-					addReadingSite.setReadingDate(readingDateField.getText());
-					addReadingSite.setReadingID(readingIDField.getText());
+
+				Reading reading = new Reading();
+
+				    reading.setSite_id(siteIDField.getText());
+					reading.setReading_date(readingDateField.getText());
+					reading.setReading_id(readingIDField.getText());
 					String value = readingTypeComboBox.getSelectedItem().toString();
-					addReadingSite.setReadingType(value);
-					addReadingSite.setReadingValue(readingValueField.getText());
-				
-					
-				if(inProgressSiteIDList.contains(siteIDField.getText())) {
-					siteList.add(addReadingSite);
-					mainTextArea.append("Added Reading\n");
-				}else {
-				
-				mainTextArea.append("Error: did not find site or site collection not in progress\n");
-				
+					reading.setReading_type(value);
+					reading.setReading_value(readingValueField.getText());
+
+
+				for (Study study : studyList) {
+					if(Integer.parseInt(study.getStudyID()) == Integer.parseInt(studyComboBox.getSelectedItem().toString())) {
+						for (Site site : study.getSites()) {
+							if(Integer.parseInt(site.getId()) == Integer.parseInt(siteIDField.getText())) {
+								if(site.isCollecting()) {
+									site.addReading(reading);
+									mainTextArea.append("Reading added");
+								}else {
+									mainTextArea.append("Site not collecting. Start site collection to add reading.\n");
+								}
+							}
+						}
+					}
 				}
+
 				readingIDField.setText(null);
 				readingValueField.setText(null);
-				
-			}
-			
 
-			
+			}
+
+
+
 		});
 		addReadingButton.setBounds(780, 271, 109, 23);
 		frame.getContentPane().add(addReadingButton);
-		
+
 		JButton exportButton = new JButton("Export");
 		exportButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JSONWriter writer = new JSONWriter();
-                writer.writeToJSON(siteList);
+			    ReadWriteJSON rwJSON = new ReadWriteJSON();
+			    AcceptFile af = new AcceptFile();
+
+				for ( Study study : studyList ) {
+				    String path = af.chooseFile().getAbsolutePath();
+                    for ( Site site : study.getSites() ) {
+                        rwJSON.writeJSON(site.getReadings(), path);
+                    }
+                }
 			}
 		});
-		exportButton.setBounds(870, 54, 89, 23);
+		exportButton.setBounds(892, 77, 89, 23);
 		frame.getContentPane().add(exportButton);
-		
+
 		JLabel siteLable = new JLabel("Site ID");
 		siteLable.setBounds(249, 142, 46, 14);
 		frame.getContentPane().add(siteLable);
-		
+
 		JLabel readingTypeLabel = new JLabel("Reading Type");
 		readingTypeLabel.setBounds(249, 206, 81, 14);
 		frame.getContentPane().add(readingTypeLabel);
-		
+
 		JLabel readingIDLabel = new JLabel("Reading ID");
 		readingIDLabel.setBounds(599, 142, 65, 14);
 		frame.getContentPane().add(readingIDLabel);
-		
+
 		JLabel readingValueLabel = new JLabel("Reading Value");
 		readingValueLabel.setBounds(599, 206, 81, 14);
 		frame.getContentPane().add(readingValueLabel);
-		
+
 		JLabel readingDateLabel = new JLabel("Reading Date");
 		readingDateLabel.setBounds(249, 275, 97, 14);
 		frame.getContentPane().add(readingDateLabel);
-		
+
 		readingValueField = new JTextField();
 		readingValueField.setBounds(734, 203, 155, 20);
 		frame.getContentPane().add(readingValueField);
 		readingValueField.setColumns(10);
-		
+
 		readingIDField = new JTextField();
 		readingIDField.setBounds(734, 139, 155, 20);
 		frame.getContentPane().add(readingIDField);
 		readingIDField.setColumns(10);
-		
+
 		siteIDField = new JTextField();
 		siteIDField.setBounds(381, 139, 155, 20);
 		frame.getContentPane().add(siteIDField);
 		siteIDField.setColumns(10);
-		
-		
-		
-		JButton importButton = new JButton("Import"); 
-		importButton.addActionListener(new ActionListener() {
+
+
+
+		JButton importJSONButton = new JButton("Import JSON");
+		importJSONButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				AcceptFile af = new AcceptFile();
-				ReadFromFile read = new ReadFromFile();
-				try {
-					File file = af.chooseFile();
-					for(Site f: read.readFromInputFile(file).getSiteReadings())
-						siteList.add(f);
-					
-				} catch (Exception e) {
-					
-				}
+
+
+
+
+			    ReadWriteJSON rwJSON = new ReadWriteJSON();
+
+			    AcceptFile af = new AcceptFile();
+
+
+
+			   ArrayList<Site> siteList = new ArrayList<>();
+
+	            for (Reading reading : rwJSON.readJSON(af.chooseFile().getAbsolutePath()) ) {
+
+	                if(reading.getSite_id() == null) {
+	                    System.out.println("Reading id missing");
+	                }else {
+
+
+	                    Site newSite = new Site(reading.getSite_id());
+	                    newSite.addReading(reading);
+
+	                    siteList.add(newSite);
+	                    mainTextArea.append(reading.getSite_id() + "\n");
+	                    mainTextArea.append(reading.getReading_type() + "\n");
+	                    mainTextArea.append(reading.getReading_value() + "\n");
+	                    mainTextArea.append(reading.getReading_date() + "\n");
+
+
+	                }
+
+	            }
+
+	            for ( Study study : studyList ) {
+                    if(Integer.parseInt(study.getStudyID()) == Integer.parseInt(studyComboBox.getSelectedItem().toString())) {
+                        for ( Site site : siteList ) {
+                            study.addSite(site);
+
+                        }
+                    }
+                }
+
+
+
+
+
+
+
 			}
 		});
-		importButton.setBounds(734, 54, 97, 23);
-		frame.getContentPane().add(importButton);
-		
-		
+		importJSONButton.setBounds(761, 77, 119, 23);
+		frame.getContentPane().add(importJSONButton);
+
+
 		startStopCollectionsTextField = new JTextField();
-		startStopCollectionsTextField.setBounds(203, 55, 148, 20);
+		startStopCollectionsTextField.setBounds(198, 78, 148, 20);
 		frame.getContentPane().add(startStopCollectionsTextField);
 		startStopCollectionsTextField.setColumns(10);
-		
+
 		JButton startCollectionsButton = new JButton("Start");
 		startCollectionsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String userEnteredID = startStopCollectionsTextField.getText();
-				
-				if(userEnteredID.isEmpty()) {// check text field not empty before doing work on text field 
+				if(userEnteredID.isEmpty()) {// check text field not empty before doing work on text field
 					mainTextArea.append("Invalid site ID\n");
-				}else if(inProgressSiteIDList.contains(userEnteredID)) {// check to see that collection is not already started
-					mainTextArea.append("Collection already in progress\n");
-					startStopCollectionsTextField.setText(null);
-
-				}else {
-					notInProgressCollectionsTextArea.setText(null);
-					inProgressCollectionsTextArea.setText(null);
-				
-					
-						notInProgressSiteIDList.remove(userEnteredID);
-						inProgressSiteIDList.add(userEnteredID);
-					
-					for (String s : inProgressSiteIDList) {
-						inProgressCollectionsTextArea.append(s);
-						inProgressCollectionsTextArea.append("\n");
-					}
-					
-							
-					for (String s : notInProgressSiteIDList) {
-						notInProgressCollectionsTextArea.append(s);
-						notInProgressCollectionsTextArea.append("\n");
-
-					}	
-					
-					mainTextArea.append("Site collection started\n");
-					startStopCollectionsTextField.setText(null);
 				}
-				
-				
-			
+
+				for (Study study : studyList) {
+					if(Integer.parseInt(study.getStudyID()) == Integer.parseInt(studyComboBox.getSelectedItem().toString())) {
+						for (Site site : study.getSites()) {
+							if(Integer.parseInt(site.getId()) == Integer.parseInt(userEnteredID)) {
+								if(site.isCollecting()) {
+									mainTextArea.append("Site already collecting\n");
+
+								}else {
+									site.setCollecting(true);
+									mainTextArea.append("Site collection started\n");
+								}
+							}
+						}
+					}
+					startStopCollectionsTextField.setText(null);
+
+
+				}
+				updateInProgressList();
 			}
 		});
-		startCollectionsButton.setBounds(463, 54, 73, 23);
+		startCollectionsButton.setBounds(463, 77, 73, 23);
 		frame.getContentPane().add(startCollectionsButton);
-		
+
 		JButton stopCollectionsButton = new JButton("Stop");
 		stopCollectionsButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
 				String userEnteredID = startStopCollectionsTextField.getText();
-				
-				if(userEnteredID.isEmpty()) {// check text field not empty before doing work on text field 
+				if(userEnteredID.isEmpty()) {// check text field not empty before doing work on text field
 					mainTextArea.append("Invalid site ID\n");
-				}else if(notInProgressSiteIDList.contains(userEnteredID)) {
-					mainTextArea.append("Collection already stopped\n");
-					startStopCollectionsTextField.setText(null);
-
-				}else {
-					notInProgressCollectionsTextArea.setText(null);
-					inProgressCollectionsTextArea.setText(null);
-				
-					inProgressSiteIDList.remove(userEnteredID);
-					notInProgressSiteIDList.add(userEnteredID);
-					
-					for (String s : inProgressSiteIDList) {
-						inProgressCollectionsTextArea.append(s);
-						inProgressCollectionsTextArea.append("\n");
-					}
-					
-							
-					for (String s : notInProgressSiteIDList) {
-						notInProgressCollectionsTextArea.append(s);
-						notInProgressCollectionsTextArea.append("\n");
-
-					}	
-					startStopCollectionsTextField.setText(null);
-					mainTextArea.append("Site collection stopped\n");
 				}
-				
-				
+
+				for (Study study : studyList) {
+					if(Integer.parseInt(study.getStudyID()) == Integer.parseInt(studyComboBox.getSelectedItem().toString())) {
+						for (Site site : study.getSites()) {
+							if(Integer.parseInt(site.getId()) == Integer.parseInt(userEnteredID)) {
+								if(site.isCollecting()) {
+									site.setCollecting(false);
+									mainTextArea.append("Site collection stopped\n");
+
+								}else {
+
+									mainTextArea.append("Site already not collecting\n");
+								}
+							}
+						}
+					}
+					startStopCollectionsTextField.setText(null);
+				}
+				updateInProgressList();
+
 			}
 		});
-		stopCollectionsButton.setBounds(546, 54, 73, 23);
+		stopCollectionsButton.setBounds(548, 77, 73, 23);
 		frame.getContentPane().add(stopCollectionsButton);
-		
+
 		JButton addSiteCollectionButton = new JButton("Add Site");
 		addSiteCollectionButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		public void actionPerformed(ActionEvent e) {
 				String userEnteredID = startStopCollectionsTextField.getText();
-				
-				if(userEnteredID.isEmpty()) {// check text field not empty before doing work on text field 
-					mainTextArea.append("Invalid site ID\n");
-				}else {
-					if(inProgressSiteIDList.isEmpty() && notInProgressSiteIDList.isEmpty()) {
-						notInProgressSiteIDList.add(userEnteredID);
-						notInProgressCollectionsTextArea.append(userEnteredID + "\n");
-						
-						
-					}else if(inProgressSiteIDList.contains(userEnteredID) || notInProgressSiteIDList.contains(userEnteredID)) {
-						mainTextArea.append("Site already added\n");
-					}else {
-						notInProgressSiteIDList.add(userEnteredID);
-						notInProgressCollectionsTextArea.append(userEnteredID + "\n");
-						
-						
-						
+
+				Site newSite = new Site(userEnteredID);
+
+
+					boolean found = false;
+
+
+					for (Study study : studyList) {
+						if(Integer.parseInt(study.getStudyID()) == Integer.parseInt(studyComboBox.getSelectedItem().toString())) {
+							for (Site site : study.getSites()) {
+								if(Integer.parseInt(site.getId()) == Integer.parseInt(userEnteredID)) {
+
+									mainTextArea.append("Site already exists\n");
+									found = true;
+								}
+							}
+
+							if(!found) {
+								mainTextArea.append("New site added\n");
+								study.addSite(newSite);
+							}
+						}
 					}
-					startStopCollectionsTextField.setText(null);
-				}
-				
-				
+
+				startStopCollectionsTextField.setText(null);
+
+				updateInProgressList();
+
 			}
 		});
-		addSiteCollectionButton.setBounds(361, 54, 89, 23);
+		addSiteCollectionButton.setBounds(363, 77, 89, 23);
 		frame.getContentPane().add(addSiteCollectionButton);
-		
+
 		JButton showAllButton = new JButton("Show All Readings");
 		showAllButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				mainTextArea.setText(null); // clear main text box before displaying all readings
-				
-				for (Site site : siteList) {
-					mainTextArea.append(site.toString() + "\n");
-					System.out.println(site.toString());
+
+				for (Study study : studyList) {// display all readings in main text box
+						for (Site site : study.getSites()) {
+								for (Reading reading : site.getReadings()) {
+									if(!site.getReadings().isEmpty()) {
+										mainTextArea.append(reading.toString());
+									}
+
+								}
+
+
+						}
+
+
+
 				}
-				
-				if(mainTextArea.getText().isEmpty()) {
-					mainTextArea.append("No readings to show");
-				}
+
 				mainTextArea.append("\n");
 			}
 		});
 		showAllButton.setBounds(819, 319, 140, 23);
 		frame.getContentPane().add(showAllButton);
-		
+
 		JButton clearButton = new JButton("Clear");
 		clearButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -350,19 +408,110 @@ public class MainFrame {
 		});
 		clearButton.setBounds(720, 319, 89, 23);
 		frame.getContentPane().add(clearButton);
-		
+
 		readingDateField = new JTextField();
 		readingDateField.setBounds(381, 272, 155, 20);
 		frame.getContentPane().add(readingDateField);
 		readingDateField.setColumns(10);
-		
+
 		JLabel collections2Label = new JLabel("Stopped Collections");
 		collections2Label.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		collections2Label.setBounds(10, 312, 164, 30);
 		frame.getContentPane().add(collections2Label);
-		
-		
-		
-		
+
+		JButton addStudyButton = new JButton("Add Study");
+		addStudyButton.addActionListener(new ActionListener() {
+			@SuppressWarnings("unchecked")
+			public void actionPerformed(ActionEvent arg0) {
+
+				studyNameLbl.setText(addStudyNameTxtField.getText().toString());
+
+				if((studyIDTxtField.getText().isEmpty()) || addStudyNameTxtField.getText().isEmpty()) {
+					mainTextArea.append("Invalid study entry\n");
+				}else {
+					Study newStudy = new Study(studyIDTxtField.getText().toString(), addStudyNameTxtField.getText().toString());
+					Boolean found = false;
+					if(studyList.isEmpty()) {
+
+					}else {
+						for (Study study : studyList) {
+							if(Integer.parseInt(study.getStudyID()) == Integer.parseInt(studyIDTxtField.getText().toString())) {
+								mainTextArea.append("Study already added\n");
+								found = true;
+								break;
+							}
+						}
+					}
+
+					if(found == false) {
+						studyList.add(newStudy);
+						studyComboBox.addItem(newStudy.getStudyID());
+					}
+				}
+
+
+
+				studyIDTxtField.setText(null);
+				addStudyNameTxtField.setText(null);
+
+
+			}
+		});
+		addStudyButton.setBounds(492, 16, 97, 25);
+		frame.getContentPane().add(addStudyButton);
+
+
+
+		addStudyNameTxtField = new JTextField();
+		addStudyNameTxtField.setToolTipText("Study Name");
+		addStudyNameTxtField.setBounds(364, 17, 116, 22);
+		frame.getContentPane().add(addStudyNameTxtField);
+		addStudyNameTxtField.setColumns(10);
+
+		studyIDTxtField = new JTextField();
+		studyIDTxtField.setToolTipText("Study ID");
+		studyIDTxtField.setBounds(230, 17, 116, 22);
+		frame.getContentPane().add(studyIDTxtField);
+		studyIDTxtField.setColumns(10);
+
+		JButton importXMLBtn = new JButton("Import XML");
+		importXMLBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			    ReadXML read = new ReadXML();
+
+			    AcceptFile af = new AcceptFile();
+			    studyList.add(read.xmlRead(af.chooseFile().getAbsolutePath()));
+
+
+			}
+		});
+		importXMLBtn.setBounds(640, 76, 109, 25);
+		frame.getContentPane().add(importXMLBtn);
+
+		JLabel studyNameLbl1 = new JLabel("");
+		studyNameLbl1.setBounds(780, 7, 190, 44);
+		frame.getContentPane().add(studyNameLbl1);
+
+
+
+
+	}
+
+	public void updateInProgressList() {
+		inProgressCollectionsTextArea.setText(null);
+		notInProgressCollectionsTextArea.setText(null);
+
+		for (Study study : studyList) {
+
+			if(Integer.parseInt(study.getStudyID()) == Integer.parseInt(studyComboBox.getSelectedItem().toString())) {
+				for (Site site : study.getSites()) {
+					if(site.isCollecting()) {
+						inProgressCollectionsTextArea.append(site.getId() + "\n");
+					}else {
+						notInProgressCollectionsTextArea.append(site.getId() + "\n");
+					}
+				}
+			}
+		}
 	}
 }
