@@ -10,7 +10,7 @@ import com.project.Study.*;
 import com.project.fileIO.*;
 
 /**
-	test class for ReadXML, it needs the example.xml inorder to pass
+	class for testing readXML
 	Author: Amadeus
 */
 
