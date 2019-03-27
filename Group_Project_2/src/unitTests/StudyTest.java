@@ -1,9 +1,11 @@
-package com.project.Study.*;
+
 package unitTests;
 
 import static org.junit.Assert.*;
 
-import org.junit.Test;
+import org.junit.*;
+
+import com.project.Study.*;
 
 public class StudyTest {
 
@@ -30,7 +32,7 @@ public class StudyTest {
 
     }
 
-   
+
 
 
 
